@@ -25,7 +25,7 @@ function App() {
   }, [searchTerm]);
 
   return (
-    <div className="flex flex-col w-full max-w-screen-lg m-0 p-8 text-center gap-y-2">
+    <div className="flex flex-col w-full max-w-screen-lg text-center gap-y-2">
       <h1 className="font-extrabold text-2xl mb-4">Top 10 Synomyms</h1>
       <input
         value={searchTerm}
