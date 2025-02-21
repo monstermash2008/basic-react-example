@@ -23,7 +23,7 @@ const Sidebar = () => {
             <Link
               to="/pokemon"
               className={`block p-2 rounded ${
-                location.pathname === "/about"
+                location.pathname.includes("/pokemon")
                   ? "bg-blue-500 text-white"
                   : "text-gray-700"
               }`}
