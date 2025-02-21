@@ -41,7 +41,7 @@ function Pokemon() {
 
   return (
     <main className="w-full h-full p-8 flex flex-col">
-      <Link to={"/pokemon"} className="bg-slate-500 text-white p-2 rounded mb-8 w-fit">Back</Link>
+      <Link to={"/pokemon"} className="bg-slate-500 text-white p-2 rounded-sm mb-8 w-fit">Back</Link>
       <h1 className="text-3xl font-bold mb-6">{data?.name}</h1>
       <div className="flex justify-center px-8 gap-4">
         <img

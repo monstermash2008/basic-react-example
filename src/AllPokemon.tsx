@@ -72,7 +72,7 @@ function AllPokemon() {
       <select
         value={genNumber}
         onChange={(e) => setGenNumber(Number(e.target.value))}
-        className="mb-6 p-2 border border-gray-300 rounded"
+        className="mb-6 p-2 border border-gray-300 rounded-sm"
       >
         {[...Array(8)].map((_, index) => (
           <option key={index + 1} value={index + 1}>
