@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import useDebounce from "../hooks/useDebounce";
 
 type Synonym = {
   word: string;
@@ -8,6 +9,7 @@ type Synonym = {
 
 function Home() {
   const [searchTerm, setSearchTerm] = useState("");
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
   const [synonymsData, setSynonymsData] = useState<Synonym[]>([]);
 
   const findRelatedWords = async (searchTerm: string) => {
@@ -19,10 +21,10 @@ function Home() {
   };
 
   useEffect(() => {
-    if (searchTerm) {
-      findRelatedWords(searchTerm);
+    if (debouncedSearchTerm) {
+      findRelatedWords(debouncedSearchTerm);
     }
-  }, [searchTerm]);
+  }, [debouncedSearchTerm]);
 
   return (
     <div className="flex flex-col flex-1 w-full text-center gap-y-2 p-4">
