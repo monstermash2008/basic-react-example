@@ -7,7 +7,7 @@ import RootLayout from "./layouts/RootLayout";
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <RootLayout />, // Sidebar persists here
+    element: <RootLayout />,
     children: [
       { path: "/", element: <Home /> },
       { path: "/pokemon", element: <AllPokemon /> },
