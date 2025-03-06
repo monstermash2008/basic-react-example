@@ -1,16 +1,56 @@
 import { useQuery } from "@tanstack/react-query";
 
+type PokemonType = {
+  type: {
+    name: string;
+    url: string;
+  };
+};
+
+type PokemonStat = {
+  base_stat: number;
+  stat: {
+    name: string;
+  };
+};
+
+type PokemonAbility = {
+  ability: {
+    name: string;
+    url: string;
+  };
+  is_hidden: boolean;
+};
+
 type Pokemon = {
   name: string;
   id: number;
   height: number;
   weight: number;
-  abilities: Ability[];
-};
-
-type Ability = {
-  name: string;
-  url: string;
+  types: PokemonType[];
+  stats: PokemonStat[];
+  abilities: PokemonAbility[];
+  sprites: {
+    front_default: string;
+    back_default: string;
+    front_shiny: string;
+    back_shiny: string;
+    other: {
+      "official-artwork": {
+        front_default: string;
+      };
+      dream_world: {
+        front_default: string;
+      };
+      home: {
+        front_default: string;
+      };
+    };
+  };
+  species: {
+    name: string;
+    url: string;
+  };
 };
 
 const fetchPokemonById = async (id: number): Promise<Pokemon> => {

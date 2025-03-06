@@ -1,9 +1,9 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { usePokemonByGeneration } from "../hooks/usePokemonByGeneration";
 
 function AllPokemon() {
-  const [genNumber, setGenNumber] = useState(1);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const genNumber = Number(searchParams.get("gen")) || 1;
 
   const { data, isFetching, error } = usePokemonByGeneration(genNumber);
 
@@ -20,7 +20,10 @@ function AllPokemon() {
       <h1 className="text-3xl font-bold mb-6">Pokemon By Generation</h1>
       <select
         value={genNumber}
-        onChange={(e) => setGenNumber(Number(e.target.value))}
+        onChange={(e) => {
+          const newGen = Number(e.target.value);
+          setSearchParams({ gen: newGen.toString() });
+        }}
         className="mb-6 p-2 border border-gray-300 rounded-sm"
       >
         {[...Array(8)].map((_, index) => (
@@ -30,28 +33,27 @@ function AllPokemon() {
         ))}
       </select>
 
-      <ul className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
         {data.pokemon_species.map((pokemon) => (
-          <li
-            className="h-44 w-full border border-gray-200 rounded-lg"
-            key={pokemon.name}
+          <Link
+            key={pokemon.id}
+            to={`/pokemon/${pokemon.id}`}
+            className="block p-4 border border-gray-200 rounded-lg hover:border-blue-500 transition-colors duration-200"
           >
-            <Link
-              to={`/pokemon/${pokemon.id}`}
-              className="w-full h-full p-4 flex flex-col items-center justify-center"
-            >
-              <span className="text-slate-700">
-                {pokemon.id} - {pokemon.name}
-              </span>
+            <div className="aspect-square flex items-center justify-center bg-gray-50 rounded-lg mb-2">
               <img
                 src={pokemon.image}
                 alt={pokemon.name}
-                className="flex object-scale-down"
+                className="w-24 h-24 object-contain"
               />
-            </Link>
-          </li>
+            </div>
+            <div className="text-center">
+              <span className="text-gray-500">#{String(pokemon.id).padStart(3, "0")}</span>
+              <h2 className="capitalize">{pokemon.name}</h2>
+            </div>
+          </Link>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
