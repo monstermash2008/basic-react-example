@@ -8,7 +8,8 @@
     "start": "bun index.ts",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "bun run db/migrate.ts",
-    "db:seed": "bun run scripts/seed.ts"
+    "db:seed": "bun run scripts/seed.ts",
+    "build": "bun run db:migrate"
   },
   "devDependencies": {
     "@types/bun": "latest"
