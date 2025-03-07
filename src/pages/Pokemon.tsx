@@ -5,7 +5,7 @@ import { PokemonImage } from "../components/PokemonImage";
 import { PokemonStats } from "../components/PokemonStats";
 import { PokemonInfo } from "../components/PokemonInfo";
 
-function Pokemon() {
+function PokemonDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -74,4 +74,4 @@ function Pokemon() {
   );
 }
 
-export default Pokemon;
+export default PokemonDetails;

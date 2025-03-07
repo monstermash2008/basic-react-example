@@ -1,9 +1,9 @@
 import { createBrowserRouter } from "react-router-dom";
 import Home from "./pages/Home";
 import AllPokemon from "./pages/AllPokemon";
-import Pokemon from "./pages/Pokemon";
+import PokemonDetails from "./pages/Pokemon";
 import RootLayout from "./layouts/RootLayout";
-import PokemonLayout from "./layouts/PokemonLayout";
+import PokemonListLayout from "./layouts/PokemonListLayout";
 
 export const router = createBrowserRouter([
   {
@@ -13,12 +13,12 @@ export const router = createBrowserRouter([
       { path: "/", element: <Home /> },
       {
         path: "pokemon",
-        element: <PokemonLayout />,
+        element: <PokemonListLayout />,
         children: [
           { path: "", element: <AllPokemon /> },
-          { path: ":id", element: <Pokemon /> },
         ],
       },
+      { path: "pokemon/:id", element: <PokemonDetails /> },
       { path: "*", element: <div>404!</div> },
     ],
   },
