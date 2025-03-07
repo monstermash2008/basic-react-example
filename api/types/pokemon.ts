@@ -47,10 +47,6 @@ export type Pokemon = {
       };
     };
   };
-  species: {
-    name: string;
-    url: string;
-  };
 };
 
 export type PokemonResource = {
