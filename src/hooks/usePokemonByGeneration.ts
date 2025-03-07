@@ -4,8 +4,8 @@ import type { PokemonGeneration, PokemonResource, PokemonWithID } from "../../ap
 // Re-export types for components that might be using them
 export type { PokemonGeneration, PokemonResource, PokemonWithID };
 
-// Update to use our local API
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
+// In production, API calls will be relative to the current domain
+const API_BASE_URL = import.meta.env.PROD ? '' : (import.meta.env.VITE_API_URL || "http://localhost:3000");
 
 const fetchPokemonByGeneration = async (
   genNumber: number

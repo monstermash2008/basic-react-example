@@ -11,8 +11,8 @@ import type {
 // Re-export types for other components that might be using them
 export type { PokemonType, PokemonStat, PokemonAbility, Pokemon };
 
-// Update to use our local API
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
+// In production, API calls will be relative to the current domain
+const API_BASE_URL = import.meta.env.PROD ? '' : (import.meta.env.VITE_API_URL || "http://localhost:3000");
 
 const fetchPokemonById = async (id: number): Promise<Pokemon> => {
   const response = await fetch(`${API_BASE_URL}/pokemon/${id}`);
