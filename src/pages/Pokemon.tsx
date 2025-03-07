@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { usePokemonById } from "../hooks/usePokemonById";
 import { PokemonHeader } from "../components/PokemonHeader";
 import { PokemonImage } from "../components/PokemonImage";
@@ -8,7 +8,13 @@ import { PokemonInfo } from "../components/PokemonInfo";
 function Pokemon() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const genNumber = searchParams.get("gen") || "1";
   const { data, isFetching, error } = usePokemonById(Number(id));
+
+  const handleBack = () => {
+    navigate(`/pokemon?gen=${genNumber}`);
+  };
 
   if (isFetching) {
     return (
@@ -31,7 +37,7 @@ function Pokemon() {
           <span className="block sm:inline"> {error.message}</span>
         </div>
         <button
-          onClick={() => navigate(-1)}
+          onClick={handleBack}
           className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
         >
           Go Back
@@ -44,7 +50,7 @@ function Pokemon() {
 
   return (
     <div className="container mx-auto p-4">
-      <PokemonHeader id={data.id} onBack={() => navigate(-1)} />
+      <PokemonHeader id={data.id} onBack={handleBack} />
 
       <div className="bg-[var(--sidebar)] rounded-lg shadow-lg p-6 max-w-4xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

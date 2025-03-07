@@ -37,7 +37,7 @@ function Home() {
           {featuredPokemon.map((pokemon) => (
             <Link
               key={pokemon.id}
-              to={`/pokemon/${pokemon.id}`}
+              to={`/pokemon/${pokemon.id}?gen=1`}
               className="group bg-[var(--sidebar)] p-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 flex flex-col items-center"
             >
               <div className="relative w-32 h-32 mb-4">

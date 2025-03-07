@@ -1,11 +1,12 @@
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 import { usePokemonByGeneration } from "../hooks/usePokemonByGeneration";
-import GenerationHeader from "../components/GenerationHeader";
+
+interface PokemonLayoutContext {
+  genNumber: number;
+}
 
 function AllPokemon() {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const genNumber = Number(searchParams.get("gen")) || 1;
-
+  const { genNumber } = useOutletContext<PokemonLayoutContext>();
   const { data, isFetching, error } = usePokemonByGeneration(genNumber);
 
   if (isFetching) {
@@ -43,40 +44,31 @@ function AllPokemon() {
   }
 
   return (
-    <div className="h-full flex flex-col">
-      <GenerationHeader 
-        genNumber={genNumber}
-        setSearchParams={setSearchParams}
-        pokemonCount={data.pokemon_species.length}
-      />
-
-      {/* Scrollable content */}
-      <div className="flex-1 overflow-auto py-4">
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 px-4">
-          {data.pokemon_species.map((pokemon) => (
-            <Link
-              key={pokemon.id}
-              to={`/pokemon/${pokemon.id}`}
-              className="group block bg-[var(--sidebar)] p-4 border border-[var(--sidebar-hover)] rounded-lg hover:border-blue-500 hover:shadow-md transition-all duration-200"
-            >
-              <div className="aspect-square flex items-center justify-center bg-[var(--sidebar-hover)] rounded-lg mb-3 group-hover:bg-blue-50/10 transition-colors duration-200">
-                <img
-                  src={pokemon.image}
-                  alt={pokemon.name}
-                  className="w-24 h-24 object-contain transform group-hover:scale-110 transition-transform duration-200"
-                />
-              </div>
-              <div className="text-center">
-                <span className="text-sm text-[var(--text)] opacity-60 font-medium">
-                  #{String(pokemon.id).padStart(3, "0")}
-                </span>
-                <h2 className="capitalize font-semibold text-[var(--text)] group-hover:text-blue-500 transition-colors duration-200">
-                  {pokemon.name}
-                </h2>
-              </div>
-            </Link>
-          ))}
-        </div>
+    <div className="py-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 px-4">
+        {data.pokemon_species.map((pokemon) => (
+          <Link
+            key={pokemon.id}
+            to={`/pokemon/${pokemon.id}?gen=${genNumber}`}
+            className="group block bg-[var(--sidebar)] p-4 border border-[var(--sidebar-hover)] rounded-lg hover:border-blue-500 hover:shadow-md transition-all duration-200"
+          >
+            <div className="aspect-square flex items-center justify-center bg-[var(--sidebar-hover)] rounded-lg mb-3 group-hover:bg-blue-50/10 transition-colors duration-200">
+              <img
+                src={pokemon.image}
+                alt={pokemon.name}
+                className="w-24 h-24 object-contain transform group-hover:scale-110 transition-transform duration-200"
+              />
+            </div>
+            <div className="text-center">
+              <span className="text-sm text-[var(--text)] opacity-60 font-medium">
+                #{String(pokemon.id).padStart(3, "0")}
+              </span>
+              <h2 className="capitalize font-semibold text-[var(--text)] group-hover:text-blue-500 transition-colors duration-200">
+                {pokemon.name}
+              </h2>
+            </div>
+          </Link>
+        ))}
       </div>
     </div>
   );
