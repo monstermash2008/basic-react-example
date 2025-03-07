@@ -1,4 +1,4 @@
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { usePokemonById } from "../hooks/usePokemonById";
 
 // Type mapping for styling Pokemon type badges
@@ -56,7 +56,7 @@ function Pokemon() {
     return (
       <div className="w-full h-full p-4 flex flex-col items-center">
         <div
-          className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+          className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative dark:bg-red-900 dark:border-red-800 dark:text-red-100"
           role="alert"
         >
           <strong className="font-bold">Error:</strong>
@@ -66,182 +66,120 @@ function Pokemon() {
           onClick={() => navigate(-1)}
           className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
         >
-          Back
+          Go Back
         </button>
       </div>
     );
   }
 
-  const formattedId = String(data?.id).padStart(3, "0");
-  const officialArtwork =
-    data?.sprites?.other?.["official-artwork"]?.front_default;
+  if (!data) return null;
 
   return (
-    <main className="w-full h-full p-2 md:p-4 flex flex-col max-w-6xl mx-auto">
-      {/* Header with back button */}
-      <div className="flex justify-between items-center mb-2">
+    <div className="container mx-auto p-4">
+      {/* Navigation */}
+      <div className="mb-8 flex items-center gap-4">
         <button
           onClick={() => navigate(-1)}
-          className="bg-blue-500 hover:bg-blue-700 text-white py-1 px-3 rounded-md transition duration-300 ease-in-out flex items-center"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center"
         >
-          <span className="mr-1">←</span> Back
+          ← Back
         </button>
-        <div className="text-gray-500">#{formattedId}</div>
+        <div className="text-sm text-[var(--text)] opacity-60">
+          #{String(data.id).padStart(3, "0")}
+        </div>
       </div>
 
-      {/* Pokemon name */}
-      <h1 className="text-3xl font-extrabold mb-2 capitalize text-center">
-        {data?.name}
-      </h1>
-
-      {/* Main content area */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 flex-1">
-        {/* Left column - Image and types */}
-        <div className="flex flex-col items-center">
-          <div className="relative">
-            <div className="absolute inset-0 bg-gray-100 rounded-full -z-10 transform scale-90 opacity-50 blur-md"></div>
-            <img
-              src={
-                officialArtwork ||
-                `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${data?.id}.png`
-              }
-              alt={data?.name}
-              className="w-48 h-48 object-contain z-10"
-            />
-          </div>
-
-          {/* Pokemon types */}
-          <div className="flex gap-2 mt-2">
-            {data?.types?.map((typeInfo) => (
-              <span
-                key={typeInfo.type.name}
-                className={`${
-                  typeColorMap[typeInfo.type.name] || "bg-gray-400"
-                } text-white px-3 py-1 rounded-full capitalize font-medium text-sm`}
-              >
-                {typeInfo.type.name}
-              </span>
-            ))}
-          </div>
-
-          {/* Basic info - moved from right column for better layout */}
-          <div className="grid grid-cols-2 gap-3 w-full mt-3">
-            <div className="bg-gray-50 p-2 rounded-lg text-center">
-              <h2 className="text-xs text-gray-500">Height</h2>
-              <p className="text-lg font-bold">{(data?.height || 0) / 10} m</p>
+      {/* Pokemon Card */}
+      <div className="bg-[var(--sidebar)] rounded-lg shadow-lg p-6 max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Image Section */}
+          <div className="flex flex-col items-center">
+            <div className="relative w-64 h-64 mb-4">
+              <div className="absolute inset-0 bg-[var(--sidebar-hover)] rounded-full" />
+              <img
+                src={data.sprites.other["official-artwork"].front_default}
+                alt={data.name}
+                className="w-full h-full object-contain relative z-10"
+              />
             </div>
-            <div className="bg-gray-50 p-2 rounded-lg text-center">
-              <h2 className="text-xs text-gray-500">Weight</h2>
-              <p className="text-lg font-bold">{(data?.weight || 0) / 10} kg</p>
-            </div>
-          </div>
-
-          {/* Sprite variants */}
-          <div className="w-full mt-3">
-            <h2 className="text-lg font-bold mb-1">Sprites</h2>
-            <div className="grid grid-cols-4 gap-1">
-              {data?.sprites?.front_default && (
-                <img
-                  src={data.sprites.front_default}
-                  alt={`${data.name} front`}
-                  className="w-12 h-12 bg-gray-100 rounded-md"
-                />
-              )}
-              {data?.sprites?.back_default && (
-                <img
-                  src={data.sprites.back_default}
-                  alt={`${data.name} back`}
-                  className="w-12 h-12 bg-gray-100 rounded-md"
-                />
-              )}
-              {data?.sprites?.front_shiny && (
-                <div className="relative">
-                  <img
-                    src={data.sprites.front_shiny}
-                    alt={`${data.name} shiny`}
-                    className="w-12 h-12 bg-gray-100 rounded-md"
-                  />
-                  <span className="absolute bottom-0 right-0 bg-yellow-400 text-xs px-0.5 rounded-sm text-[0.6rem]">
-                    ✨
-                  </span>
-                </div>
-              )}
-              {data?.sprites?.back_shiny && (
-                <div className="relative">
-                  <img
-                    src={data.sprites.back_shiny}
-                    alt={`${data.name} shiny back`}
-                    className="w-12 h-12 bg-gray-100 rounded-md"
-                  />
-                  <span className="absolute bottom-0 right-0 bg-yellow-400 text-xs px-0.5 rounded-sm text-[0.6rem]">
-                    ✨
-                  </span>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* Right column - Stats and details */}
-        <div className="bg-white rounded-xl shadow p-4 flex flex-col gap-3">
-          {/* Abilities */}
-          <div>
-            <h2 className="text-lg font-bold mb-1">Abilities</h2>
-            <div className="flex flex-wrap gap-1">
-              {data?.abilities?.map((abilityInfo) => (
+            <h1 className="text-3xl font-bold capitalize mb-4">{data.name}</h1>
+            <div className="flex gap-2">
+              {data.types.map((type) => (
                 <span
-                  key={abilityInfo.ability.name}
-                  className={`bg-gray-200 px-2 py-0.5 rounded-lg text-xs capitalize ${
-                    abilityInfo.is_hidden
-                      ? "border border-dashed border-gray-400"
-                      : ""
-                  }`}
+                  key={type.type.name}
+                  className={`${
+                    typeColorMap[type.type.name]
+                  } text-white px-3 py-1 rounded-full text-sm font-semibold`}
                 >
-                  {abilityInfo.ability.name.replace(/-/g, " ")}
-                  {abilityInfo.is_hidden && (
-                    <span className="text-xs ml-0.5">(hidden)</span>
-                  )}
+                  {type.type.name}
                 </span>
               ))}
             </div>
           </div>
 
-          {/* Stats */}
-          <div className="flex-1">
-            <h2 className="text-lg font-bold mb-1">Base Stats</h2>
-            <div className="space-y-1.5">
-              {data?.stats?.map((statInfo) => {
-                const statName = formatStatName(statInfo.stat.name);
-                const statValue = statInfo.base_stat;
-                const statPercentage = Math.min(100, (statValue / 255) * 100);
-
-                // Choose color based on stat value
-                let statColor = "bg-red-500";
-                if (statValue >= 80) statColor = "bg-green-500";
-                else if (statValue >= 50) statColor = "bg-yellow-500";
-
-                return (
-                  <div key={statInfo.stat.name} className="flex items-center">
-                    <div className="w-16 text-sm font-medium text-gray-700">
-                      {statName}
-                    </div>
-                    <div className="w-10 text-center text-sm font-bold">
-                      {statValue}
-                    </div>
-                    <div className="flex-1 h-3 bg-gray-200 rounded-full ml-1">
-                      <div
-                        className={`h-full rounded-full ${statColor}`}
-                        style={{ width: `${statPercentage}%` }}
-                      ></div>
-                    </div>
+          {/* Stats Section */}
+          <div>
+            <h2 className="text-xl font-bold mb-4">Base Stats</h2>
+            <div className="space-y-4">
+              {data.stats.map((stat) => (
+                <div key={stat.stat.name}>
+                  <div className="flex justify-between mb-1">
+                    <span className="text-sm font-medium text-[var(--text)]">
+                      {formatStatName(stat.stat.name)}
+                    </span>
+                    <span className="text-sm font-medium text-[var(--text)]">
+                      {stat.base_stat}
+                    </span>
                   </div>
-                );
-              })}
+                  <div className="w-full bg-[var(--background)] rounded-full h-2">
+                    <div
+                      className="bg-blue-500 rounded-full h-2 transition-all duration-300"
+                      style={{
+                        width: `${Math.min(
+                          (stat.base_stat / 255) * 100,
+                          100
+                        )}%`,
+                      }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Additional Info */}
+            <div className="mt-8 grid grid-cols-2 gap-4">
+              <div>
+                <h3 className="text-lg font-semibold mb-2">Physical</h3>
+                <p className="text-[var(--text)] opacity-80">
+                  Height: {data.height / 10}m
+                </p>
+                <p className="text-[var(--text)] opacity-80">
+                  Weight: {data.weight / 10}kg
+                </p>
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold mb-2">Abilities</h3>
+                <div className="space-y-1">
+                  {data.abilities.map((ability) => (
+                    <p
+                      key={ability.ability.name}
+                      className="text-[var(--text)] opacity-80 capitalize"
+                    >
+                      {ability.ability.name.replace("-", " ")}
+                      {ability.is_hidden && (
+                        <span className="text-sm text-blue-500 ml-2">
+                          (Hidden)
+                        </span>
+                      )}
+                    </p>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </main>
+    </div>
   );
 }
 

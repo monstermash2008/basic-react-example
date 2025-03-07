@@ -6,7 +6,7 @@ function Home() {
     { id: 25, name: "Pikachu" },
     { id: 1, name: "Bulbasaur" },
     { id: 4, name: "Charmander" },
-    { id: 7, name: "Squirtle" }
+    { id: 7, name: "Squirtle" },
   ];
 
   return (
@@ -16,9 +16,9 @@ function Home() {
         <h1 className="text-4xl md:text-5xl font-extrabold mb-6 bg-gradient-to-r from-blue-500 to-red-500 bg-clip-text text-transparent">
           Welcome to PokéExplorer
         </h1>
-        <p className="text-lg text-gray-600 mb-8">
-          Discover and learn about all your favorite Pokémon across different generations.
-          Browse through detailed information, stats, and more!
+        <p className="text-lg mb-8">
+          Discover and learn about all your favorite Pokémon across different
+          generations. Browse through detailed information, stats, and more!
         </p>
         <Link
           to="/pokemon"
@@ -30,23 +30,27 @@ function Home() {
 
       {/* Featured Pokemon Section */}
       <div className="w-full max-w-4xl">
-        <h2 className="text-2xl font-bold mb-6 text-center">Featured Pokémon</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center">
+          Featured Pokémon
+        </h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {featuredPokemon.map((pokemon) => (
             <Link
               key={pokemon.id}
               to={`/pokemon/${pokemon.id}`}
-              className="group bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 flex flex-col items-center"
+              className="group bg-[var(--sidebar)] p-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 flex flex-col items-center"
             >
               <div className="relative w-32 h-32 mb-4">
-                <div className="absolute inset-0 bg-gray-100 rounded-full transform group-hover:scale-105 transition-transform duration-200" />
+                <div className="absolute inset-0 bg-[var(--sidebar-hover)] rounded-full transform group-hover:scale-105 transition-transform duration-200" />
                 <img
                   src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.id}.png`}
                   alt={pokemon.name}
                   className="w-full h-full object-contain relative z-10 transform group-hover:scale-110 transition-transform duration-200"
                 />
               </div>
-              <span className="text-sm text-gray-500">#{String(pokemon.id).padStart(3, "0")}</span>
+              <span className="text-sm text-[var(--text)] opacity-60">
+                #{String(pokemon.id).padStart(3, "0")}
+              </span>
               <h3 className="font-semibold text-lg group-hover:text-blue-500 transition-colors duration-200">
                 {pokemon.name}
               </h3>
@@ -84,22 +88,23 @@ function Home() {
         <div className="text-center p-4">
           <div className="text-blue-500 text-2xl mb-2">🔍</div>
           <h3 className="font-semibold mb-2">Detailed Info</h3>
-          <p className="text-gray-600 text-sm">
-            Get comprehensive details about each Pokémon's abilities, stats, and more
+          <p className="text-[var(--text)] opacity-60 text-sm">
+            Get comprehensive details about each Pokémon's abilities, stats, and
+            more
           </p>
         </div>
         <div className="text-center p-4">
           <div className="text-blue-500 text-2xl mb-2">⚡</div>
           <h3 className="font-semibold mb-2">All Generations</h3>
-          <p className="text-gray-600 text-sm">
+          <p className="text-[var(--text)] opacity-60 text-sm">
             Browse Pokémon from different generations with easy navigation
           </p>
         </div>
         <div className="text-center p-4">
           <div className="text-blue-500 text-2xl mb-2">📱</div>
-          <h3 className="font-semibold mb-2">Mobile Friendly</h3>
-          <p className="text-gray-600 text-sm">
-            Enjoy a seamless experience across all your devices
+          <h3 className="font-semibold mb-2">Responsive Design</h3>
+          <p className="text-[var(--text)] opacity-60 text-sm">
+            Access PokéExplorer on any device with our mobile-friendly interface
           </p>
         </div>
       </div>

@@ -3,9 +3,9 @@ import Sidebar from "../components/Sidebar";
 
 const RootLayout = () => {
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className="flex h-screen overflow-hidden bg-[var(--background)]">
       <Sidebar />
-      <div className="flex-1 overflow-auto p-6">
+      <div className="flex-1 overflow-auto text-[var(--text)]">
         <Outlet />
       </div>
     </div>
