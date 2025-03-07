@@ -1,20 +1,20 @@
 import { useQuery } from "@tanstack/react-query";
 
-type PokemonType = {
+export type PokemonType = {
   type: {
     name: string;
     url: string;
   };
 };
 
-type PokemonStat = {
+export type PokemonStat = {
   base_stat: number;
   stat: {
     name: string;
   };
 };
 
-type PokemonAbility = {
+export type PokemonAbility = {
   ability: {
     name: string;
     url: string;

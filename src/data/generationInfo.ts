@@ -1,0 +1,58 @@
+export const generationInfo = [
+  {
+    number: 1,
+    region: "Kanto",
+    years: "1996-1999",
+    count: 151,
+    color: "from-red-500 to-blue-500",
+  },
+  {
+    number: 2,
+    region: "Johto",
+    years: "1999-2002",
+    count: 100,
+    color: "from-gold-500 to-silver-500",
+  },
+  {
+    number: 3,
+    region: "Hoenn",
+    years: "2002-2006",
+    count: 135,
+    color: "from-red-500 to-green-500",
+  },
+  {
+    number: 4,
+    region: "Sinnoh",
+    years: "2006-2010",
+    count: 107,
+    color: "from-blue-500 to-pink-500",
+  },
+  {
+    number: 5,
+    region: "Unova",
+    years: "2010-2013",
+    count: 156,
+    color: "from-black-500 to-white-500",
+  },
+  {
+    number: 6,
+    region: "Kalos",
+    years: "2013-2016",
+    count: 72,
+    color: "from-blue-400 to-red-400",
+  },
+  {
+    number: 7,
+    region: "Alola",
+    years: "2016-2019",
+    count: 88,
+    color: "from-yellow-400 to-purple-400",
+  },
+  {
+    number: 8,
+    region: "Galar",
+    years: "2019-2022",
+    count: 96,
+    color: "from-blue-600 to-red-600",
+  },
+];
