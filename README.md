@@ -1,30 +1,104 @@
-# React + TypeScript + Vite
+# Pokemon Explorer Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A Pokemon exploration app built with React, TypeScript, and Vite, featuring a custom Pokemon API built with Hono, Bun, and PostgreSQL.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Browse Pokemon by generation
+- View detailed Pokemon information (stats, types, abilities)
+- Custom Pokemon API with PostgreSQL database
+- Type-safe frontend and backend integration
+- Responsive design with theme support
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### Frontend
+- React with TypeScript
+- Vite as the build tool
+- TanStack Query for data fetching
+- React Router for navigation
 
-- Configure the top-level `parserOptions` property like this:
+### Backend
+- Bun as the JavaScript runtime
+- Hono as the web framework
+- PostgreSQL for the database (via Docker)
+- Drizzle ORM for database operations
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+## Getting Started
+
+### Prerequisites
+
+- [Bun](https://bun.sh/) installed
+- [Docker](https://www.docker.com/) installed
+
+### Setup and Installation
+
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   bun install
+   cd api && bun install && cd ..
+   ```
+
+3. Run the setup script to initialize the database and seed it with Pokemon data:
+   ```bash
+   ./setup.sh
+   ```
+
+This script will:
+- Start the PostgreSQL database via Docker
+- Run database migrations
+- Seed the database with Pokemon data
+- Provide instructions for next steps
+
+4. Start the API server (in one terminal):
+   ```bash
+   cd api && bun run dev
+   ```
+
+5. Start the frontend application (in another terminal):
+   ```bash
+   bun run dev
+   ```
+
+## API Endpoints
+
+The custom Pokemon API provides endpoints that match the PokeAPI functionality used by the frontend:
+
+- `GET /pokemon/:id` - Get detailed information about a Pokemon by ID
+- `GET /generation/:id` - Get all Pokemon from a specific generation
+
+## Environment Variables
+
+- `VITE_API_URL` - URL for the API (default: http://localhost:3000)
+- `PORT` - Port for the API server (default: 3000)
+- `DATABASE_URL` - PostgreSQL connection string
+
+## Project Structure
+
+- `src/` - Frontend React application
+- `api/` - Backend API with Hono and Bun
+  - `db/` - Database schema and migrations
+  - `types/` - Shared TypeScript types
+  - `scripts/` - Utility scripts including database seeding
+
+## Development
+
+During development, you can make changes to both the frontend and backend code. The development servers support hot reloading, so changes will be reflected immediately.
+
+### Working with the Database
+
+To regenerate database migrations after schema changes:
+```bash
+cd api && bun run db:generate
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+To apply migrations:
+```bash
+cd api && bun run db:migrate
+```
+
+To reseed the database:
+```bash
+cd api && bun run db:seed
+```

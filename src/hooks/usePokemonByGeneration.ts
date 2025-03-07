@@ -1,56 +1,32 @@
 import { useQuery } from "@tanstack/react-query";
+import type { PokemonGeneration, PokemonResource, PokemonWithID } from "../../api/types/pokemon";
 
-type PokemonResource = {
-  name: string;
-  url: string;
-};
+// Re-export types for components that might be using them
+export type { PokemonGeneration, PokemonResource, PokemonWithID };
 
-type PokemonGeneration = {
-  name: string;
-  pokemon_species: PokemonWithID[];
-};
-
-type PokemonWithID = {
-  name: string;
-  id: number;
-  image: string;
-};
+// Update to use our local API
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
 const fetchPokemonByGeneration = async (
   genNumber: number
 ): Promise<PokemonGeneration> => {
   const response = await fetch(
-    `https://pokeapi.co/api/v2/generation/${genNumber}`
+    `${API_BASE_URL}/generation/${genNumber}`
   );
+  
+  if (!response.ok) {
+    throw new Error(`Failed to fetch generation ${genNumber}: ${response.statusText}`);
+  }
+  
   const data = await response.json();
-
-  data.pokemon_species.sort((a: PokemonResource, b: PokemonResource) => {
-    const aId = parseInt(a.url.split("/").slice(-2, -1)[0]);
-    const bId = parseInt(b.url.split("/").slice(-2, -1)[0]);
-    return aId - bId;
-  });
-
-  const pokemonWithIDs = data.pokemon_species.map(
-    (pokemon: PokemonResource) => {
-      const id = parseInt(pokemon.url.split("/").slice(-2, -1)[0]); // Extract ID from URL
-      const image = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
-      return {
-        name: pokemon.name,
-        id,
-        image,
-      };
-    }
-  );
-
-  return {
-    name: data.name,
-    pokemon_species: pokemonWithIDs,
-  };
+  
+  // Our custom API already returns sorted Pokemon with proper IDs and images
+  return data;
 };
 
 export const usePokemonByGeneration = (genNumber: number) => {
   return useQuery({
-    queryKey: ["first-gen-pokemon", genNumber],
+    queryKey: ["pokemon-by-generation", genNumber],
     queryFn: () => fetchPokemonByGeneration(genNumber),
   });
 };

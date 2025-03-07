@@ -1,60 +1,24 @@
 import { useQuery } from "@tanstack/react-query";
 
-export type PokemonType = {
-  type: {
-    name: string;
-    url: string;
-  };
-};
+// Import types from our API
+import type {
+  Pokemon,
+  PokemonType,
+  PokemonStat,
+  PokemonAbility
+} from "../../api/types/pokemon";
 
-export type PokemonStat = {
-  base_stat: number;
-  stat: {
-    name: string;
-  };
-};
+// Re-export types for other components that might be using them
+export type { PokemonType, PokemonStat, PokemonAbility, Pokemon };
 
-export type PokemonAbility = {
-  ability: {
-    name: string;
-    url: string;
-  };
-  is_hidden: boolean;
-};
-
-type Pokemon = {
-  name: string;
-  id: number;
-  height: number;
-  weight: number;
-  types: PokemonType[];
-  stats: PokemonStat[];
-  abilities: PokemonAbility[];
-  sprites: {
-    front_default: string;
-    back_default: string;
-    front_shiny: string;
-    back_shiny: string;
-    other: {
-      "official-artwork": {
-        front_default: string;
-      };
-      dream_world: {
-        front_default: string;
-      };
-      home: {
-        front_default: string;
-      };
-    };
-  };
-  species: {
-    name: string;
-    url: string;
-  };
-};
+// Update to use our local API
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
 const fetchPokemonById = async (id: number): Promise<Pokemon> => {
-  const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+  const response = await fetch(`${API_BASE_URL}/pokemon/${id}`);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch Pokemon #${id}: ${response.statusText}`);
+  }
   const data = await response.json();
   return data;
 };
