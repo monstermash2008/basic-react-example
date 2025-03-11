@@ -9,7 +9,7 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "bun run db/migrate.ts",
     "db:seed": "bun run scripts/seed.ts",
-    "build": "bun run db:migrate"
+    "build": "bun run db:migrate && bun run db:seed"
   },
   "devDependencies": {
     "@types/bun": "latest"

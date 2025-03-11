@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import { serve } from "@hono/node-server";
 import { cors } from "hono/cors";
 import { db } from "./db";
-import { eq, and } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import {
   pokemon,
   pokemonTypes,
@@ -11,16 +11,36 @@ import {
   generations,
   pokemonGenerations,
 } from "./db/schema";
-import { Pokemon, PokemonGeneration } from "./types/pokemon";
+import type { Pokemon, PokemonGeneration } from "./types/pokemon";
 
 const app = new Hono();
 
-// Add CORS middleware
-app.use("/*", cors());
+// Add CORS middleware with production configuration
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://basic-react-example.vercel.app'
+];
+
+app.use("/*", cors({
+  origin: (origin) => {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return '*';
+    
+    // Check if the origin is in our allowlist
+    return allowedOrigins.includes(origin) ? origin : null;
+  },
+  allowMethods: ['GET'],
+  maxAge: 86400,
+  credentials: true,
+}));
 
 // Health check route
 app.get("/", (c) => {
-  return c.json({ status: "ok", message: "Pokemon API is running" });
+  return c.json({ 
+    status: "ok", 
+    message: "Pokemon API is running",
+    environment: process.env.NODE_ENV || 'development'
+  });
 });
 
 // Get Pokemon by ID route
@@ -55,6 +75,9 @@ app.get("/pokemon/:id", async (c) => {
       where: eq(pokemonAbilities.pokemonId, id),
     });
 
+    // Get base URL for API links
+    const baseUrl = process.env.API_URL || 'http://localhost:3000';
+
     // Format response to match expected Pokemon type
     const result: Pokemon = {
       id: pokemonData.id,
@@ -65,7 +88,7 @@ app.get("/pokemon/:id", async (c) => {
       types: types.map((type) => ({
         type: {
           name: type.typeName,
-          url: `http://localhost:3000/type/${type.typeName}`,
+          url: `${baseUrl}/type/${type.typeName}`,
         },
       })),
       stats: stats.map((stat) => ({
@@ -77,7 +100,7 @@ app.get("/pokemon/:id", async (c) => {
       abilities: abilities.map((ability) => ({
         ability: {
           name: ability.abilityName,
-          url: `http://localhost:3000/ability/${ability.abilityName}`,
+          url: `${baseUrl}/ability/${ability.abilityName}`,
         },
         is_hidden: ability.isHidden,
       })),
@@ -150,11 +173,11 @@ app.get("/generation/:id", async (c) => {
   }
 });
 
-// Start the server
-const port = process.env.PORT || 3000;
+// Start the server with dynamic port for Railway
+const port = Number(process.env.PORT) || 3000;
 console.log(`Server is running on port ${port}`);
 
 serve({
   fetch: app.fetch,
-  port: Number(port),
+  port
 });
