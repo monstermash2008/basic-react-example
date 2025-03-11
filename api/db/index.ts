@@ -8,9 +8,9 @@ const connectionString =
   process.env.DATABASE_URL ||
   "postgres://pokemon:pokemon@localhost:5432/pokemon_db";
 
-// Configure postgres client with SSL for production
+// Configure postgres client with SSL for Neon and production
 const client = postgres(connectionString, {
-  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: true } : false,
+  ssl: process.env.NEON_DATABASE_URL ? { rejectUnauthorized: true } : false,
 });
 
 // Create drizzle database instance

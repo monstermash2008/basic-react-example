@@ -6,7 +6,7 @@ A Pokemon exploration app built with React, TypeScript, and Vite, featuring a cu
 
 - Browse Pokemon by generation
 - View detailed Pokemon information (stats, types, abilities)
-- Custom Pokemon API with PostgreSQL database
+- Custom Pokemon API with PostgreSQL database (supports both local and Neon)
 - Type-safe frontend and backend integration
 - Responsive design with theme support
 
@@ -21,7 +21,7 @@ A Pokemon exploration app built with React, TypeScript, and Vite, featuring a cu
 ### Backend
 - Bun as the JavaScript runtime
 - Hono as the web framework
-- PostgreSQL for the database (via Docker)
+- PostgreSQL for the database (via Docker or Neon)
 - Drizzle ORM for database operations
 
 ## Getting Started
@@ -29,76 +29,80 @@ A Pokemon exploration app built with React, TypeScript, and Vite, featuring a cu
 ### Prerequisites
 
 - [Bun](https://bun.sh/) installed
-- [Docker](https://www.docker.com/) installed
+- [Docker](https://www.docker.com/) installed (only needed for local development)
 
-### Setup and Installation
+### Database Configuration
 
-1. Clone the repository
-2. Install dependencies:
+Choose one of the following database options:
+
+1. **Local Development (Default)**
+   - Uses Docker PostgreSQL
+   - No additional configuration needed
+   - Great for development and testing
+
+2. **Neon Cloud Database**
+   - Sign up at https://neon.tech
+   - Create a new project
+   - Copy your connection string
+   - Create `api/.env` with:
+     ```
+     NEON_DATABASE_URL=your_neon_connection_string
+     ```
+
+### Setup Steps
+
+1. Install dependencies:
    ```bash
    bun install
    cd api && bun install && cd ..
    ```
 
-3. Run the setup script to initialize the database and seed it with Pokemon data:
+2. Run the setup script:
    ```bash
    ./setup.sh
    ```
+   This will:
+   - Use Neon if configured, otherwise use local PostgreSQL
+   - Set up the database and run migrations
+   - Seed Pokemon data
+   - Provide next steps
 
-This script will:
-- Start the PostgreSQL database via Docker
-- Run database migrations
-- Seed the database with Pokemon data
-- Provide instructions for next steps
-
-4. Start the API server (in one terminal):
+3. Start the API server:
    ```bash
    cd api && bun run dev
    ```
 
-5. Start the frontend application (in another terminal):
+4. Start the frontend:
    ```bash
    bun run dev
    ```
 
-## API Endpoints
-
-The custom Pokemon API provides endpoints that match the PokeAPI functionality used by the frontend:
-
-- `GET /pokemon/:id` - Get detailed information about a Pokemon by ID
-- `GET /generation/:id` - Get all Pokemon from a specific generation
-
 ## Environment Variables
 
-- `VITE_API_URL` - URL for the API (default: http://localhost:3000)
-- `PORT` - Port for the API server (default: 3000)
-- `DATABASE_URL` - PostgreSQL connection string
+### Frontend
+- `VITE_API_URL` - API URL (default: http://localhost:3000)
 
-## Project Structure
-
-- `src/` - Frontend React application
-- `api/` - Backend API with Hono and Bun
-  - `db/` - Database schema and migrations
-  - `types/` - Shared TypeScript types
-  - `scripts/` - Utility scripts including database seeding
+### Backend
+- `NEON_DATABASE_URL` - Neon PostgreSQL connection string (optional)
+- `DATABASE_URL` - PostgreSQL connection string (defaults to local Docker setup)
+- `PORT` - API server port (default: 3000)
 
 ## Development
 
-During development, you can make changes to both the frontend and backend code. The development servers support hot reloading, so changes will be reflected immediately.
-
 ### Working with the Database
 
-To regenerate database migrations after schema changes:
+Database commands (run from api/ directory):
 ```bash
-cd api && bun run db:generate
+bun run db:generate  # Generate new migrations
+bun run db:migrate   # Apply migrations
+bun run db:seed     # Seed database with Pokemon data
 ```
 
-To apply migrations:
-```bash
-cd api && bun run db:migrate
-```
+### Switching Database Environments
 
-To reseed the database:
-```bash
-cd api && bun run db:seed
-```
+You can easily switch between environments:
+
+1. To use Neon: Add NEON_DATABASE_URL to api/.env
+2. To use local: Comment out or remove NEON_DATABASE_URL from api/.env
+
+The application will automatically detect and use the appropriate configuration.

@@ -9,5 +9,6 @@ export default {
       process.env.NEON_DATABASE_URL ||
       process.env.DATABASE_URL ||
       "postgres://pokemon:pokemon@localhost:5432/pokemon_db",
+    ssl: process.env.NEON_DATABASE_URL ? { rejectUnauthorized: true } : false,
   },
 } satisfies Config;

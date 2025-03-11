@@ -3,10 +3,16 @@ import { migrate } from 'drizzle-orm/postgres-js/migrator';
 import postgres from 'postgres';
 
 // Database connection string
-const connectionString = process.env.DATABASE_URL || 'postgres://pokemon:pokemon@localhost:5432/pokemon_db';
+const connectionString = 
+  process.env.NEON_DATABASE_URL ||
+  process.env.DATABASE_URL ||
+  'postgres://pokemon:pokemon@localhost:5432/pokemon_db';
 
 // For migrations, we need a separate client with max 1 connection
-const migrationClient = postgres(connectionString, { max: 1 });
+const migrationClient = postgres(connectionString, { 
+  max: 1,
+  ssl: process.env.NEON_DATABASE_URL ? { rejectUnauthorized: true } : false,
+});
 
 async function runMigrations() {
   console.log('Running migrations...');
