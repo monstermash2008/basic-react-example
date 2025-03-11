@@ -18,7 +18,8 @@ const app = new Hono();
 // Add CORS middleware with production configuration
 const allowedOrigins = [
   'http://localhost:5173',
-  'https://basic-react-example.vercel.app'
+  'https://basic-react-example.vercel.app',
+  "https://pokemon-app-lac-zeta.vercel.app"
 ];
 
 app.use("/*", cors({
