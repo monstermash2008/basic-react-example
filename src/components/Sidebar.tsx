@@ -1,12 +1,19 @@
 import { Link, useLocation } from "react-router-dom";
 import { useTheme } from "../hooks/ThemeContext";
+import { useSidebar } from "../hooks/useSidebar";
 
 const Sidebar = () => {
   const location = useLocation();
   const { theme, toggleTheme } = useTheme();
+  const { isOpen } = useSidebar();
 
   return (
-    <div className="w-64 h-screen bg-[var(--sidebar)] p-4">
+    <div
+      className={`${isOpen ? "translate-x-0" : "-translate-x-full"} 
+        fixed md:relative md:translate-x-0 z-30
+        w-64 h-screen bg-[var(--sidebar)] p-4
+        transition-transform duration-300 ease-in-out`}
+    >
       <nav>
         <ul className="space-y-4">
           <li>
@@ -44,5 +51,4 @@ const Sidebar = () => {
     </div>
   );
 };
-
 export default Sidebar;
