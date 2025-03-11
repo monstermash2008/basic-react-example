@@ -19,7 +19,8 @@ const app = new Hono();
 const allowedOrigins = [
   'http://localhost:5173',
   'https://basic-react-example.vercel.app',
-  "https://pokemon-app-lac-zeta.vercel.app"
+  "https://pokemon-app-lac-zeta.vercel.app",
+  "https://ryanfinnie.dev",
 ];
 
 app.use("/*", cors({
